@@ -4,52 +4,112 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="950.0" style="-fx-background-color: #e0f2fe;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cms.controllers.CourseController">
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cms.controllers.CourseController">
 
     <children>
 
-        <Text fill="#1e293b" layoutX="33.0" layoutY="50.0" text="Course Management System">
-            <font><Font name="Comic Sans MS Bold" size="26.0" /></font>
-        </Text>
+        <!-- Header -->
+        <AnchorPane prefHeight="80" prefWidth="1000" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+            <children>
+                <Text fill="#28a745" layoutX="30.0" layoutY="50.0" text="Course Management System">
+                    <font><Font name="Arial Bold" size="26.0" /></font>
+                </Text>
+            </children>
+        </AnchorPane>
 
-        <Text fill="#1e293b" layoutX="33.0" layoutY="140.0" text="Add new student">
-            <font><Font name="Comic Sans MS" size="20.0" /></font>
-        </Text>
+        <!-- Left Panel - Add Student Form -->
+        <AnchorPane layoutX="20" layoutY="100" prefHeight="530" prefWidth="280" style="-fx-background-color: white; -fx-background-radius: 4; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 4;">
+            <children>
 
-        <TextField fx:id="studentId" layoutX="23.0" layoutY="160.0" prefWidth="200" promptText="Student ID" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <Label layoutX="20" layoutY="20" text="Add New Student" textFill="#333333">
+                    <font><Font name="Arial Bold" size="16" /></font>
+                </Label>
 
-        <TextField fx:id="name" layoutX="23.0" layoutY="205.0" prefWidth="200" promptText="Name" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <!-- Student ID -->
+                <Label layoutX="20" layoutY="60" text="Student ID" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="studentId" layoutX="20" layoutY="80" prefWidth="240" prefHeight="35" promptText="Enter ID" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <TextField fx:id="surname" layoutX="23.0" layoutY="250.0" prefWidth="200" promptText="Surname" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <!-- Name -->
+                <Label layoutX="20" layoutY="125" text="Name" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="name" layoutX="20" layoutY="145" prefWidth="240" prefHeight="35" promptText="Enter name" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <TextField fx:id="faculty" layoutX="23.0" layoutY="295.0" prefWidth="200" promptText="Faculty" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <!-- Surname -->
+                <Label layoutX="20" layoutY="190" text="Surname" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="surname" layoutX="20" layoutY="210" prefWidth="240" prefHeight="35" promptText="Enter surname" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <TextField fx:id="department" layoutX="23.0" layoutY="340.0" prefWidth="200" promptText="Department" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <!-- Faculty -->
+                <Label layoutX="20" layoutY="255" text="Faculty" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="faculty" layoutX="20" layoutY="275" prefWidth="240" prefHeight="35" promptText="Enter faculty" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <TextField fx:id="group" layoutX="23.0" layoutY="385.0" prefWidth="200" promptText="Group" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <!-- Department -->
+                <Label layoutX="20" layoutY="320" text="Department" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="department" layoutX="20" layoutY="340" prefWidth="240" prefHeight="35" promptText="Enter department" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <Button layoutX="73.0" layoutY="440.0" onAction="#addStudent" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 16px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25),4,0,0,2);" text="Add Student" />
+                <!-- Group -->
+                <Label layoutX="20" layoutY="385" text="Group" textFill="#666666">
+                    <font><Font name="Arial" size="12" /></font>
+                </Label>
+                <TextField fx:id="group" layoutX="20" layoutY="405" prefWidth="240" prefHeight="35" promptText="Enter group" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 13px;" />
 
-        <TableView fx:id="studentsTable" layoutX="270.0" layoutY="110.0" prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-border-radius: 12; -fx-background-radius: 12; -fx-table-cell-border-color: transparent; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 13px;">
-            <columns>
-                <TableColumn fx:id="colId" prefWidth="80" text="ID" />
-                <TableColumn fx:id="colName" prefWidth="120" text="Name" />
-                <TableColumn fx:id="colSurname" prefWidth="120" text="Surname" />
-                <TableColumn fx:id="colFaculty" prefWidth="120" text="Faculty" />
-                <TableColumn fx:id="colDepartment" prefWidth="120" text="Department" />
-                <TableColumn fx:id="colGroup" prefWidth="90" text="Group" />
-            </columns>
-        </TableView>
+                <!-- Add Button -->
+                <Button layoutX="20" layoutY="460" onAction="#addStudent" prefWidth="240" prefHeight="40" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 3; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-width: 0;" text="Add Student">
+                    <font><Font name="Arial Bold" size="13" /></font>
+                </Button>
 
-        <TextField fx:id="search" layoutX="270.0" layoutY="50.0" onKeyTyped="#searchStudent" prefHeight="36.0" prefWidth="200.0" promptText="Search..." style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 6 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+            </children>
+        </AnchorPane>
 
-        <Button fx:id="edit" layoutX="780.0" layoutY="52.0" onAction="#editStudent" style="-fx-background-color: #fbbf24; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 15px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2),4,0,0,2);" text="Edit" />
+        <!-- Right Panel - Students Table -->
+        <AnchorPane layoutX="320" layoutY="100" prefHeight="530" prefWidth="660" style="-fx-background-color: white; -fx-background-radius: 4; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 4;">
+            <children>
 
-        <Button fx:id="delete" layoutX="842.0" layoutY="52.0" onAction="#deleteStudent" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 15px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2),4,0,0,2);" text="Delete" />
+                <!-- Table Header -->
+                <Label layoutX="20" layoutY="20" text="Students List" textFill="#333333">
+                    <font><Font name="Arial Bold" size="16" /></font>
+                </Label>
+
+                <!-- Search Field -->
+                <TextField fx:id="search" layoutX="20" layoutY="50" onKeyTyped="#searchStudent" prefHeight="35" prefWidth="200" promptText="Search..." style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 6 12; -fx-font-size: 13px;" />
+
+                <!-- Edit Button -->
+                <Button fx:id="edit" layoutX="500" layoutY="50" onAction="#editStudent" prefWidth="70" prefHeight="35" style="-fx-background-color: #ffc107; -fx-text-fill: white; -fx-background-radius: 3; -fx-font-size: 13px; -fx-cursor: hand; -fx-border-width: 0;" text="Edit">
+                    <font><Font name="Arial Bold" size="12" /></font>
+                </Button>
+
+                <!-- Delete Button -->
+                <Button fx:id="delete" layoutX="580" layoutY="50" onAction="#deleteStudent" prefWidth="70" prefHeight="35" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-background-radius: 3; -fx-font-size: 13px; -fx-cursor: hand; -fx-border-width: 0;" text="Delete">
+                    <font><Font name="Arial Bold" size="12" /></font>
+                </Button>
+
+                <!-- Table -->
+                <TableView fx:id="studentsTable" layoutX="20" layoutY="100" prefHeight="410" prefWidth="620" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-table-cell-border-color: #f0f0f0; -fx-font-size: 13px;">
+                    <columns>
+                        <TableColumn fx:id="colId" prefWidth="70" text="ID" />
+                        <TableColumn fx:id="colName" prefWidth="110" text="Name" />
+                        <TableColumn fx:id="colSurname" prefWidth="110" text="Surname" />
+                        <TableColumn fx:id="colFaculty" prefWidth="110" text="Faculty" />
+                        <TableColumn fx:id="colDepartment" prefWidth="110" text="Department" />
+                        <TableColumn fx:id="colGroup" prefWidth="110" text="Group" />
+                    </columns>
+                </TableView>
+
+            </children>
+        </AnchorPane>
 
     </children>
 

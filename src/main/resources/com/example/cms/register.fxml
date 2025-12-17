@@ -8,23 +8,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350" prefWidth="400" style="-fx-background-color: #e0f2fe;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cms.controllers.RegisterController">
+<AnchorPane prefHeight="500" prefWidth="500" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cms.controllers.RegisterController">
 
     <children>
-        <Label alignment="CENTER" layoutX="158.0" layoutY="40.0" text="Register" textFill="#1e293b">
-            <font>
-                <Font name="Comic Sans MS" size="24.0" />
-            </font>
-        </Label>
 
-        <TextField fx:id="usernameField" layoutX="100" layoutY="90" prefWidth="200" promptText="Username" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+        <!-- White Card Container -->
+        <AnchorPane layoutX="100" layoutY="60" prefHeight="380" prefWidth="300" style="-fx-background-color: white; -fx-background-radius: 4; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 4; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
 
-        <PasswordField fx:id="passwordField" layoutX="100" layoutY="140" prefWidth="200" promptText="Password" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+            <children>
+                <!-- Logo/Title -->
+                <Label layoutX="55" layoutY="25" text="Course Management" textFill="#28a745">
+                    <font><Font name="Arial Bold" size="20" /></font>
+                </Label>
 
-        <PasswordField fx:id="confirmPasswordField" layoutX="100" layoutY="190" prefWidth="200" promptText="Confirm password" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+                <Label layoutX="80" layoutY="55" text="Create new account" textFill="#666666">
+                    <font><Font name="Arial" size="13" /></font>
+                </Label>
 
-        <Button layoutX="100" layoutY="240" onAction="#onRegister" prefWidth="200" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 16px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25),4,0,0,2);" text="Register" />
+                <!-- Username Field -->
+                <TextField fx:id="usernameField" layoutX="25" layoutY="95" prefWidth="250" prefHeight="38" promptText="Username" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
 
-        <Hyperlink layoutX="112.0" layoutY="289.0" onAction="#goToLogin" style="-fx-text-fill: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" text="I already have an account" />
+                <!-- Password Field -->
+                <PasswordField fx:id="passwordField" layoutX="25" layoutY="145" prefWidth="250" prefHeight="38" promptText="Password" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
+
+                <!-- Confirm Password Field -->
+                <PasswordField fx:id="confirmPasswordField" layoutX="25" layoutY="195" prefWidth="250" prefHeight="38" promptText="Confirm password" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
+
+                <!-- Register Button -->
+                <Button layoutX="25" layoutY="250" onAction="#onRegister" prefWidth="250" prefHeight="40" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 3; -fx-font-size: 15px; -fx-cursor: hand; -fx-border-width: 0;" text="Register">
+                    <font><Font name="Arial Bold" size="14" /></font>
+                </Button>
+
+                <!-- Login Link -->
+                <Hyperlink layoutX="50" layoutY="305" onAction="#goToLogin" style="-fx-text-fill: #0066cc; -fx-font-size: 13px; -fx-underline: true;" text="Already have an account? Sign in" />
+
+            </children>
+
+        </AnchorPane>
+
     </children>
 </AnchorPane>

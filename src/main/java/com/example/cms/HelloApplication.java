@@ -3,6 +3,7 @@ package com.example.cms;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import com.example.cms.database.Database;
 
@@ -21,6 +22,10 @@ public class HelloApplication extends Application {
         Database.createTables();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/login.fxml"));
         Scene scene = new Scene(loader.load());
+        stage.getIcons().add(
+                new Image(getClass().getResourceAsStream("/edupage.png"))
+        );
+
         stage.setTitle("Course Management System");
         stage.setScene(scene);
         stage.show();
