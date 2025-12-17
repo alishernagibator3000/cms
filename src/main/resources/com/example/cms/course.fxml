@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="950.0" style="-fx-background-color: #e0f2fe;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cms.controllers.CourseController">
+
+    <children>
+
+        <Text fill="#1e293b" layoutX="33.0" layoutY="50.0" text="Course Management System">
+            <font><Font name="Comic Sans MS Bold" size="26.0" /></font>
+        </Text>
+
+        <Text fill="#1e293b" layoutX="33.0" layoutY="140.0" text="Add new student">
+            <font><Font name="Comic Sans MS" size="20.0" /></font>
+        </Text>
+
+        <TextField fx:id="studentId" layoutX="23.0" layoutY="160.0" prefWidth="200" promptText="Student ID" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <TextField fx:id="name" layoutX="23.0" layoutY="205.0" prefWidth="200" promptText="Name" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <TextField fx:id="surname" layoutX="23.0" layoutY="250.0" prefWidth="200" promptText="Surname" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <TextField fx:id="faculty" layoutX="23.0" layoutY="295.0" prefWidth="200" promptText="Faculty" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <TextField fx:id="department" layoutX="23.0" layoutY="340.0" prefWidth="200" promptText="Department" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <TextField fx:id="group" layoutX="23.0" layoutY="385.0" prefWidth="200" promptText="Group" style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 8 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <Button layoutX="73.0" layoutY="440.0" onAction="#addStudent" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 16px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25),4,0,0,2);" text="Add Student" />
+
+        <TableView fx:id="studentsTable" layoutX="270.0" layoutY="110.0" prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-border-radius: 12; -fx-background-radius: 12; -fx-table-cell-border-color: transparent; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 13px;">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="80" text="ID" />
+                <TableColumn fx:id="colName" prefWidth="120" text="Name" />
+                <TableColumn fx:id="colSurname" prefWidth="120" text="Surname" />
+                <TableColumn fx:id="colFaculty" prefWidth="120" text="Faculty" />
+                <TableColumn fx:id="colDepartment" prefWidth="120" text="Department" />
+                <TableColumn fx:id="colGroup" prefWidth="90" text="Group" />
+            </columns>
+        </TableView>
+
+        <TextField fx:id="search" layoutX="270.0" layoutY="50.0" onKeyTyped="#searchStudent" prefHeight="36.0" prefWidth="200.0" promptText="Search..." style="-fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #94a3b8; -fx-background-color: rgba(255,255,255,0.9); -fx-padding: 6 12; -fx-focus-color: #3b82f6; -fx-font-family: 'Comic Sans MS'; -fx-font-size: 14px;" />
+
+        <Button fx:id="edit" layoutX="780.0" layoutY="52.0" onAction="#editStudent" style="-fx-background-color: #fbbf24; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 15px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2),4,0,0,2);" text="Edit" />
+
+        <Button fx:id="delete" layoutX="842.0" layoutY="52.0" onAction="#deleteStudent" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 16; -fx-font-size: 15px; -fx-font-family: 'Comic Sans MS'; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2),4,0,0,2);" text="Delete" />
+
+    </children>
+
+</AnchorPane>
