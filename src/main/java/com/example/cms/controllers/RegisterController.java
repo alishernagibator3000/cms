@@ -4,11 +4,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ProgressIndicator;
 import com.example.cms.database.Database;
 import com.example.cms.HelloApplication;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class RegisterController {
@@ -16,6 +19,14 @@ public class RegisterController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private ProgressIndicator loadingIndicator;
+
+    @FXML
+    public void initialize() {
+        if (loadingIndicator != null) {
+            loadingIndicator.setVisible(false);
+        }
+    }
 
     @FXML
     protected void onRegister() {
@@ -24,34 +35,51 @@ public class RegisterController {
         String c = confirmPasswordField.getText().trim();
 
         if (u.isEmpty() || p.isEmpty()) {
-            showError("Validation", "Username and password required");
+            showError("Validation Error", "Username and password are required");
             return;
         }
+
+        if (u.length() < 3) {
+            showError("Validation Error", "Username must be at least 3 characters long");
+            return;
+        }
+
+        if (p.length() < 4) {
+            showError("Validation Error", "Password must be at least 4 characters long");
+            return;
+        }
+
         if (!p.equals(c)) {
-            showError("Validation", "Passwords do not match");
+            showError("Validation Error", "Passwords do not match");
             return;
         }
 
-        try {
-            boolean ok = Database.registerUser(u, p);
-            if (ok) {
-                Alert a = new Alert(Alert.AlertType.INFORMATION);
-                a.setTitle("Success");
-                a.setHeaderText(null);
-                a.setContentText("Account created. Please login");
-                a.showAndWait();
+        showLoading(true);
 
-                goToLogin();
-            } else {
-                showError("Register failed", "Username already exists");
+        // Run in background thread to avoid UI freeze
+        new Thread(() -> {
+            try {
+                boolean ok = Database.registerUser(u, p);
+                javafx.application.Platform.runLater(() -> {
+                    showLoading(false);
+                    if (ok) {
+                        Alert a = new Alert(Alert.AlertType.INFORMATION);
+                        a.setTitle("Success");
+                        a.setHeaderText(null);
+                        a.setContentText("Account created successfully! Please login with your credentials.");
+                        a.showAndWait();
+                        goToLogin();
+                    } else {
+                        showError("Registration Failed", "Username already exists. Please choose a different username.");
+                    }
+                });
+            } catch (SQLException e) {
+                javafx.application.Platform.runLater(() -> {
+                    showLoading(false);
+                    showError("Database Error", "Failed to register user: " + e.getMessage());
+                });
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showError("Database error", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Error", e.getMessage());
-        }
+        }).start();
     }
 
     @FXML
@@ -60,9 +88,14 @@ public class RegisterController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/login.fxml"));
             Scene scene = new Scene(loader.load());
             HelloApplication.getPrimaryStage().setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Navigation error", e.getMessage());
+        } catch (IOException e) {
+            showError("Navigation Error", "Failed to load login screen: " + e.getMessage());
+        }
+    }
+
+    private void showLoading(boolean show) {
+        if (loadingIndicator != null) {
+            javafx.application.Platform.runLater(() -> loadingIndicator.setVisible(show));
         }
     }
 

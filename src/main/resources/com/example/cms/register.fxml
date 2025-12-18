@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -26,13 +27,16 @@
                 </Label>
 
                 <!-- Username Field -->
-                <TextField fx:id="usernameField" layoutX="25" layoutY="95" prefWidth="250" prefHeight="38" promptText="Username" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
+                <TextField fx:id="usernameField" layoutX="25" layoutY="95" prefWidth="250" prefHeight="38" promptText="Username (min 3 chars)" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
 
                 <!-- Password Field -->
-                <PasswordField fx:id="passwordField" layoutX="25" layoutY="145" prefWidth="250" prefHeight="38" promptText="Password" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
+                <PasswordField fx:id="passwordField" layoutX="25" layoutY="145" prefWidth="250" prefHeight="38" promptText="Password (min 4 chars)" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
 
                 <!-- Confirm Password Field -->
                 <PasswordField fx:id="confirmPasswordField" layoutX="25" layoutY="195" prefWidth="250" prefHeight="38" promptText="Confirm password" style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-width: 1; -fx-border-radius: 3; -fx-background-radius: 3; -fx-padding: 8 12; -fx-font-size: 14px;" />
+
+                <!-- Loading Indicator -->
+                <ProgressIndicator fx:id="loadingIndicator" layoutX="135" layoutY="245" prefHeight="30" prefWidth="30" visible="false" />
 
                 <!-- Register Button -->
                 <Button layoutX="25" layoutY="250" onAction="#onRegister" prefWidth="250" prefHeight="40" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 3; -fx-font-size: 15px; -fx-cursor: hand; -fx-border-width: 0;" text="Register">

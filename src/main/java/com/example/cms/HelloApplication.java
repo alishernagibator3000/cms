@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
 
         stage.setTitle("Course Management System");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
