@@ -208,19 +208,19 @@ public static List<Student> importFromCSV(String filepath) {
 ## Screenshots
 
 ### Login Screen
-![Login](docs/screenshots/login.png)
+<img width="1920" height="1080" alt="Снимок экрана (56)" src="https://github.com/user-attachments/assets/29e7c1a3-7cd9-4f37-9cd4-0bd810b16955" />
 *Clean authentication interface with validation*
 
 ### Registration
-![Register](docs/screenshots/register.png)
+<img width="1920" height="1080" alt="Снимок экрана (58)" src="https://github.com/user-attachments/assets/c710005f-d921-4740-ae42-34c4ad415cec" />
 *New user registration with password confirmation*
 
 ### Main Dashboard
-![Dashboard](docs/screenshots/dashboard.png)
+<img width="1920" height="1080" alt="Снимок экрана (59)" src="https://github.com/user-attachments/assets/0d986391-6a12-45c4-914d-0b642d8b0d4e" />
 *Student management interface with real-time search*
 
 ### Edit Mode
-![Edit](docs/screenshots/edit.png)
+<img width="1920" height="1080" alt="Снимок экрана (60)" src="https://github.com/user-attachments/assets/e3fb8db9-9993-49f3-a17d-f0c28f7c498a" />
 *In-place editing with visual indicators*
 
 ## Installation and Usage
