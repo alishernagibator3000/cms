@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CourseController implements Initializable {
 
@@ -25,6 +27,7 @@ public class CourseController implements Initializable {
     private Timer searchTimer;
     private boolean isEditMode = false;
     private Student editingStudent = null;
+    private ExecutorService executorService;
 
     @FXML private TableView<Student> studentsTable;
     @FXML private TableColumn<Student, Integer> colId;
@@ -47,8 +50,16 @@ public class CourseController implements Initializable {
     @FXML private Button cancelButton;
     @FXML private ProgressIndicator loadingIndicator;
 
+    private static final int MAX_FIELD_LENGTH = 255;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        executorService = Executors.newSingleThreadExecutor(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            return thread;
+        });
+
         setupColumns();
         studentsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         studentsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
@@ -66,33 +77,47 @@ public class CourseController implements Initializable {
         if (loadingIndicator != null) {
             loadingIndicator.setVisible(false);
         }
+
+        // Field length validation
+        addTextLimiter(name, MAX_FIELD_LENGTH);
+        addTextLimiter(surname, MAX_FIELD_LENGTH);
+        addTextLimiter(faculty, MAX_FIELD_LENGTH);
+        addTextLimiter(department, MAX_FIELD_LENGTH);
+        addTextLimiter(group, MAX_FIELD_LENGTH);
+    }
+
+    private void addTextLimiter(TextField textField, int maxLength) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && newValue.length() > maxLength) {
+                textField.setText(oldValue);
+            }
+        });
     }
 
     public void setUser(int userId) {
         this.userId = userId;
-        try {
-            showLoading(true);
-            loadStudents();
-        } catch (SQLException e) {
-            showError("Database Error", e.getMessage());
-        } finally {
-            showLoading(false);
-        }
+        executorService.submit(() -> {
+            try {
+                Platform.runLater(() -> showLoading(true));
+                loadStudents();
+            } catch (SQLException e) {
+                Platform.runLater(() -> showError("Database Error", e.getMessage()));
+            } finally {
+                Platform.runLater(() -> showLoading(false));
+            }
+        });
     }
 
     @FXML
     protected void loadStudents() throws SQLException {
-        showLoading(true);
-        try {
-            ObservableList<Student> list = Database.getAllStudentsForUser(userId);
+        ObservableList<Student> list = Database.getAllStudentsForUser(userId);
+        Platform.runLater(() -> {
             studentsTable.setItems(list);
             studentsTable.sort();
             if (list.isEmpty()) {
                 clearForm();
             }
-        } finally {
-            showLoading(false);
-        }
+        });
     }
 
     @FXML
@@ -106,19 +131,29 @@ public class CourseController implements Initializable {
         if (student == null) return;
 
         showLoading(true);
-        try {
-            Database.addStudentForUser(student, userId);
-            showInfo("Success", "Student added successfully");
-            reload();
-        } catch (SQLException e) {
-            if (e.getMessage().contains("already exists")) {
-                showError("Duplicate ID", e.getMessage());
-            } else {
-                showError("Database Error", e.getMessage());
+        executorService.submit(() -> {
+            try {
+                Database.addStudentForUser(student, userId);
+                Platform.runLater(() -> {
+                    showInfo("Success", "Student added successfully");
+                    try {
+                        reload();
+                    } catch (SQLException e) {
+                        showError("Database Error", e.getMessage());
+                    }
+                });
+            } catch (SQLException e) {
+                Platform.runLater(() -> {
+                    if (e.getMessage().contains("already exists")) {
+                        showError("Duplicate ID", e.getMessage());
+                    } else {
+                        showError("Database Error", e.getMessage());
+                    }
+                });
+            } finally {
+                Platform.runLater(() -> showLoading(false));
             }
-        } finally {
-            showLoading(false);
-        }
+        });
     }
 
     @FXML
@@ -131,19 +166,27 @@ public class CourseController implements Initializable {
 
         if (confirmAction("Delete Student", "Are you sure you want to delete student: " + selected.getName() + " " + selected.getSurname() + "?")) {
             showLoading(true);
-            try {
-                int rowsAffected = Database.deleteStudentForUser(selected.getId(), userId);
-                if (rowsAffected > 0) {
-                    showInfo("Deleted", "Student removed successfully");
-                    reload();
-                } else {
-                    showWarning("Not Found", "Student not found or already deleted");
+            executorService.submit(() -> {
+                try {
+                    int rowsAffected = Database.deleteStudentForUser(selected.getId(), userId);
+                    Platform.runLater(() -> {
+                        if (rowsAffected > 0) {
+                            showInfo("Deleted", "Student removed successfully");
+                            try {
+                                reload();
+                            } catch (SQLException e) {
+                                showError("Database Error", e.getMessage());
+                            }
+                        } else {
+                            showWarning("Not Found", "Student not found or already deleted");
+                        }
+                    });
+                } catch (SQLException e) {
+                    Platform.runLater(() -> showError("Database Error", e.getMessage()));
+                } finally {
+                    Platform.runLater(() -> showLoading(false));
                 }
-            } catch (SQLException e) {
-                showError("Database Error", e.getMessage());
-            } finally {
-                showLoading(false);
-            }
+            });
         }
     }
 
@@ -192,20 +235,28 @@ public class CourseController implements Initializable {
         }
 
         showLoading(true);
-        try {
-            int rowsAffected = Database.updateStudentForUser(student, userId);
-            if (rowsAffected > 0) {
-                showInfo("Updated", "Student updated successfully");
-                exitEditMode();
-                reload();
-            } else {
-                showWarning("Not Found", "Student not found. It may have been deleted.");
+        executorService.submit(() -> {
+            try {
+                int rowsAffected = Database.updateStudentForUser(student, userId);
+                Platform.runLater(() -> {
+                    if (rowsAffected > 0) {
+                        showInfo("Updated", "Student updated successfully");
+                        exitEditMode();
+                        try {
+                            reload();
+                        } catch (SQLException e) {
+                            showError("Database Error", e.getMessage());
+                        }
+                    } else {
+                        showWarning("Not Found", "Student not found. It may have been deleted.");
+                    }
+                });
+            } catch (SQLException e) {
+                Platform.runLater(() -> showError("Database Error", e.getMessage()));
+            } finally {
+                Platform.runLater(() -> showLoading(false));
             }
-        } catch (SQLException e) {
-            showError("Database Error", e.getMessage());
-        } finally {
-            showLoading(false);
-        }
+        });
     }
 
     @FXML
@@ -239,27 +290,28 @@ public class CourseController implements Initializable {
             searchTimer.cancel();
         }
 
-        searchTimer = new Timer();
+        searchTimer = new Timer(true); // daemon timer
         searchTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    String text = search.getText().trim();
-                    showLoading(true);
-                    try {
-                        if (text.length() < 1) {
-                            loadStudents();
-                            return;
-                        }
+                String text = search.getText().trim();
+                Platform.runLater(() -> showLoading(true));
+
+                try {
+                    if (text.length() < 1) {
+                        loadStudents();
+                    } else {
                         ObservableList<Student> results = Database.searchStudentsForUser(text, userId);
-                        studentsTable.setItems(results);
-                        studentsTable.sort();
-                    } catch (SQLException e) {
-                        showError("Database Error", e.getMessage());
-                    } finally {
-                        showLoading(false);
+                        Platform.runLater(() -> {
+                            studentsTable.setItems(results);
+                            studentsTable.sort();
+                        });
                     }
-                });
+                } catch (SQLException e) {
+                    Platform.runLater(() -> showError("Database Error", e.getMessage()));
+                } finally {
+                    Platform.runLater(() -> showLoading(false));
+                }
             }
         }, 300);
     }
@@ -267,16 +319,29 @@ public class CourseController implements Initializable {
     @FXML
     protected void logout() {
         if (confirmAction("Logout", "Are you sure you want to logout?")) {
-            Session.currentUserId = -1;
+            cleanup();
+            Session.setCurrentUserId(-1);
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/login.fxml"));
-                Scene scene = new Scene(loader.load());
-                HelloApplication.getPrimaryStage().setTitle("Course Management System - Login");
-                HelloApplication.getPrimaryStage().setScene(scene);
-            } catch (IOException e) {
-                showError("Navigation Error", "Failed to return to login screen: " + e.getMessage());
-            }
+            Platform.runLater(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/login.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    HelloApplication.getPrimaryStage().setTitle("Course Management System - Login");
+                    HelloApplication.getPrimaryStage().setScene(scene);
+                } catch (IOException e) {
+                    showError("Navigation Error", "Failed to return to login screen: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    public void cleanup() {
+        if (searchTimer != null) {
+            searchTimer.cancel();
+            searchTimer = null;
+        }
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
         }
     }
 

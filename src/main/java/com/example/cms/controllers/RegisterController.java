@@ -1,5 +1,6 @@
 package com.example.cms.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import com.example.cms.HelloApplication;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RegisterController {
 
@@ -21,11 +24,18 @@ public class RegisterController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private ProgressIndicator loadingIndicator;
 
+    private ExecutorService executorService;
+
     @FXML
     public void initialize() {
         if (loadingIndicator != null) {
             loadingIndicator.setVisible(false);
         }
+        executorService = Executors.newSingleThreadExecutor(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            return thread;
+        });
     }
 
     @FXML
@@ -56,11 +66,10 @@ public class RegisterController {
 
         showLoading(true);
 
-        // Run in background thread to avoid UI freeze
-        new Thread(() -> {
+        executorService.submit(() -> {
             try {
                 boolean ok = Database.registerUser(u, p);
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     showLoading(false);
                     if (ok) {
                         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -74,17 +83,18 @@ public class RegisterController {
                     }
                 });
             } catch (SQLException e) {
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     showLoading(false);
                     showError("Database Error", "Failed to register user: " + e.getMessage());
                 });
             }
-        }).start();
+        });
     }
 
     @FXML
     protected void goToLogin() {
         try {
+            cleanup();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/login.fxml"));
             Scene scene = new Scene(loader.load());
             HelloApplication.getPrimaryStage().setScene(scene);
@@ -95,7 +105,7 @@ public class RegisterController {
 
     private void showLoading(boolean show) {
         if (loadingIndicator != null) {
-            javafx.application.Platform.runLater(() -> loadingIndicator.setVisible(show));
+            Platform.runLater(() -> loadingIndicator.setVisible(show));
         }
     }
 
@@ -105,5 +115,11 @@ public class RegisterController {
         a.setHeaderText(null);
         a.setContentText(message);
         a.showAndWait();
+    }
+
+    public void cleanup() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
     }
 }

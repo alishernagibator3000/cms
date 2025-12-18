@@ -1,5 +1,6 @@
 package com.example.cms.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,8 @@ import com.example.cms.models.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginController {
 
@@ -21,11 +24,18 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private ProgressIndicator loadingIndicator;
 
+    private ExecutorService executorService;
+
     @FXML
     public void initialize() {
         if (loadingIndicator != null) {
             loadingIndicator.setVisible(false);
         }
+        executorService = Executors.newSingleThreadExecutor(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            return thread;
+        });
     }
 
     @FXML
@@ -40,14 +50,13 @@ public class LoginController {
 
         showLoading(true);
 
-        // Run in background thread to avoid UI freeze
-        new Thread(() -> {
+        executorService.submit(() -> {
             try {
                 if (Database.validateUser(u, p)) {
                     int id = Database.getUserId(u);
-                    Session.currentUserId = id;
+                    Session.setCurrentUserId(id);
 
-                    javafx.application.Platform.runLater(() -> {
+                    Platform.runLater(() -> {
                         try {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/course.fxml"));
                             Scene scene = new Scene(loader.load());
@@ -64,23 +73,24 @@ public class LoginController {
                         }
                     });
                 } else {
-                    javafx.application.Platform.runLater(() -> {
+                    Platform.runLater(() -> {
                         showLoading(false);
                         showError("Login Failed", "Invalid username or password");
                     });
                 }
             } catch (SQLException e) {
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     showLoading(false);
                     showError("Database Error", "Failed to connect to database: " + e.getMessage());
                 });
             }
-        }).start();
+        });
     }
 
     @FXML
     protected void goToRegister() {
         try {
+            cleanup();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/cms/register.fxml"));
             Scene scene = new Scene(loader.load());
             HelloApplication.getPrimaryStage().setScene(scene);
@@ -91,7 +101,7 @@ public class LoginController {
 
     private void showLoading(boolean show) {
         if (loadingIndicator != null) {
-            javafx.application.Platform.runLater(() -> loadingIndicator.setVisible(show));
+            Platform.runLater(() -> loadingIndicator.setVisible(show));
         }
     }
 
@@ -101,5 +111,11 @@ public class LoginController {
         a.setHeaderText(null);
         a.setContentText(message);
         a.showAndWait();
+    }
+
+    public void cleanup() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
     }
 }
