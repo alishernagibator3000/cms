@@ -300,9 +300,9 @@ All database operations use a single-thread executor to prevent concurrent modif
 - Update: O(log n) with primary key index
 
 ## License
+This project is created for educational purposes.
+You are free to use and modify it for educational purposes.
 
-[Insert license information]
-
-## Contributors
-
-[Insert contributor information]
+## Author
+**Abakirov Alisher**
+- Second-year student at IT & Business College, group SCA-24A
