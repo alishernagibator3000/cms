@@ -120,13 +120,20 @@ public class CourseController implements Initializable {
         });
     }
 
+    // ИСПРАВЛЕНО: Этот метод теперь обрабатывает оба режима
     @FXML
     protected void addStudent() {
         if (isEditMode) {
-            showWarning("Edit Mode", "You are in edit mode. Click Cancel first or finish editing.");
-            return;
+            // Если в режиме редактирования, сохраняем изменения
+            saveEdit();
+        } else {
+            // Иначе добавляем нового студента
+            addNewStudent();
         }
+    }
 
+    // Метод для добавления нового студента
+    private void addNewStudent() {
         Student student = getFormData();
         if (student == null) return;
 
@@ -198,11 +205,8 @@ public class CourseController implements Initializable {
             return;
         }
 
-        if (!isEditMode) {
-            enterEditMode(selected);
-        } else {
-            saveEdit();
-        }
+        // Просто входим в режим редактирования
+        enterEditMode(selected);
     }
 
     private void enterEditMode(Student student) {
@@ -290,7 +294,7 @@ public class CourseController implements Initializable {
             searchTimer.cancel();
         }
 
-        searchTimer = new Timer(true); // daemon timer
+        searchTimer = new Timer(true);
         searchTimer.schedule(new TimerTask() {
             @Override
             public void run() {
