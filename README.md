@@ -17,7 +17,7 @@ The Course Management System is a JavaFX-based desktop application that provides
 
 ## 🎥 Demo Video
 
-https://drive.google.com/drive/folders/1QczmaHJH_H7PMO-shLyd9OiGY0L9VF4N
+[https://drive.google.com/drive/folders/1QczmaHJH_H7PMO-shLyd9OiGY0L9VF4N](https://drive.google.com/drive/folders/1QczmaHJH_H7PMO-shLyd9OiGY0L9VF4N?usp=sharing)
 
 ## 🏗️ Design Choices
 
