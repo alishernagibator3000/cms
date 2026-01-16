@@ -14,11 +14,7 @@ The Course Management System is a JavaFX-based desktop application that provides
 - **Multi-user Support**: Each user has their own isolated student records
 - **Responsive UI**: Modern design with loading indicators and form validation
 - **Data Persistence**: SQLite database for reliable data storage
-
-## 🎥 Demo Video
-
-[https://drive.google.com/drive/folders/1QczmaHJH_H7PMO-shLyd9OiGY0L9VF4N](https://drive.google.com/drive/folders/1QczmaHJH_H7PMO-shLyd9OiGY0L9VF4N?usp=sharing)
-
+- 
 ## 🏗️ Design Choices
 
 ### Architecture
